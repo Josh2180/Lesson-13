@@ -15,11 +15,7 @@ public class Task {
 
     public String getDesc() {
         return description;
-    }
-    
-//    public String setName(){
-//        
-//    }
+    }   
 
     public boolean validate() {
         if (name == null || description == null || name.equals("") || description.equals("")) {

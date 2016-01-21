@@ -38,7 +38,7 @@ public class TaskMaster extends javax.swing.JFrame {
         lblttask = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnfirst = new javax.swing.JButton();
         btnprevious = new javax.swing.JButton();
         btnlast = new javax.swing.JButton();
         btnnext = new javax.swing.JButton();
@@ -49,11 +49,11 @@ public class TaskMaster extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mnureplace = new javax.swing.JMenuItem();
         mnuremove = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        mnurestore = new javax.swing.JMenuItem();
+        mnuclear = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        mnuInsertAfter = new javax.swing.JMenuItem();
+        mnubefore = new javax.swing.JMenuItem();
+        mnuafter = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,7 +100,12 @@ public class TaskMaster extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton1.setText("<<");
+        btnfirst.setText("<<");
+        btnfirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnfirstActionPerformed(evt);
+            }
+        });
 
         btnprevious.setText("<");
         btnprevious.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +134,7 @@ public class TaskMaster extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(btnfirst)
                 .addGap(18, 18, 18)
                 .addComponent(btnprevious)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -143,7 +148,7 @@ public class TaskMaster extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnfirst)
                     .addComponent(btnprevious)
                     .addComponent(btnlast)
                     .addComponent(btnnext))
@@ -188,26 +193,41 @@ public class TaskMaster extends javax.swing.JFrame {
         });
         jMenu2.add(mnuremove);
 
-        jMenuItem5.setText("Restore Current Task to Screen");
-        jMenu2.add(jMenuItem5);
+        mnurestore.setText("Restore Current Task to Screen");
+        mnurestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnurestoreActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnurestore);
 
-        jMenuItem6.setText("Clear Screen");
-        jMenu2.add(jMenuItem6);
+        mnuclear.setText("Clear Screen");
+        mnuclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuclearActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuclear);
 
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Insert");
 
-        jMenuItem7.setText("Before Current Task");
-        jMenu3.add(jMenuItem7);
-
-        mnuInsertAfter.setText("After Current Task");
-        mnuInsertAfter.addActionListener(new java.awt.event.ActionListener() {
+        mnubefore.setText("Before Current Task");
+        mnubefore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuInsertAfterActionPerformed(evt);
+                mnubeforeActionPerformed(evt);
             }
         });
-        jMenu3.add(mnuInsertAfter);
+        jMenu3.add(mnubefore);
+
+        mnuafter.setText("After Current Task");
+        mnuafter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuafterActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mnuafter);
 
         jMenuBar1.add(jMenu3);
 
@@ -254,32 +274,32 @@ public class TaskMaster extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnuremoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuremoveActionPerformed
-        if(tottask==0) return;
+        if (tottask == 0) {
+            return;
+        }
         li.next();
         li.remove();
         tottask--;
-        lblttask.setText(""+tottask);
-        if(tottask==0){
+        lblttask.setText("" + tottask);
+        if (tottask == 0) {
             txtname.setText("");
             txtdesc.setText("");
-            curtask=0;
+            curtask = 0;
             lblctask.setText("n/a");
             return;
-        }
-        else if(curtask>1){
-            t=(Task)li.previous();
+        } else if (curtask > 1) {
+            t = (Task) li.previous();
             curtask--;
-            lblctask.setText(""+curtask);
-        }
-        else{
+            lblctask.setText("" + curtask);
+        } else {
             li.next();
-            t=(Task)li.previous();  
+            t = (Task) li.previous();
         }
         txtname.setText(t.getName());
         txtdesc.setText(t.getDesc());
     }//GEN-LAST:event_mnuremoveActionPerformed
 
-    private void mnuInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuInsertAfterActionPerformed
+    private void mnuafterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuafterActionPerformed
         String nm = txtname.getText();
         String d = txtdesc.getText();
         t = new Task(nm, d);
@@ -299,7 +319,7 @@ public class TaskMaster extends javax.swing.JFrame {
         lblctask.setText("" + curtask);
         JOptionPane.showMessageDialog(this, "Task Added");
 
-    }//GEN-LAST:event_mnuInsertAfterActionPerformed
+    }//GEN-LAST:event_mnuafterActionPerformed
 
     private void btnlastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlastActionPerformed
 
@@ -317,41 +337,46 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_btnlastActionPerformed
 
     private void btnnextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnextActionPerformed
-        
-        if(curtask==tottask) return;
+
+        if (curtask == tottask) {
+            return;
+        }
         curtask++;
-        lblctask.setText(""+curtask);
+        lblctask.setText("" + curtask);
         li.next();
-        t=(Task)li.previous();
+        if (li.hasNext()) {
+            li.next();
+        }
+        t = (Task) li.previous();
         txtname.setText(t.getName());
         txtdesc.setText(t.getDesc());
     }//GEN-LAST:event_btnnextActionPerformed
 
     private void mnureplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnureplaceActionPerformed
-        
-        if(tottask==0){
-            JOptionPane.showMessageDialog(this,"No task to replace this with, use Insert instead");
+
+        if (tottask == 0) {
+            JOptionPane.showMessageDialog(this, "No task to replace this with, use Insert instead");
             return;
         }
-        
+
         String nm = txtname.getText();
         String d = txtdesc.getText();
-        Task t = new Task(nm,d);
-        if(t.validate()==false){
+        Task t = new Task(nm, d);
+        if (t.validate() == false) {
             JOptionPane.showMessageDialog(this, "Error - Must enter all information");
             return;
         }
         li.next();
         li.set(t);
         li.previous();
-        
+
     }//GEN-LAST:event_mnureplaceActionPerformed
 
     private void mnushowallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnushowallActionPerformed
-        String result="";
-        for(int x=0; x<list.size(); x++){
-            t=(Task)list.get(x);
-            result+="TASK "+(x+1)+":\n"+t.toString()+"\n";
+        String result = "";
+        for (int x = 0; x < list.size(); x++) {
+            t = (Task) list.get(x);
+            result += "TASK " + (x + 1) + ":\n" + t.toString() + "\n";
         }
         JOptionPane.showMessageDialog(this, result);
     }//GEN-LAST:event_mnushowallActionPerformed
@@ -361,14 +386,63 @@ public class TaskMaster extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuexitActionPerformed
 
     private void btnpreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpreviousActionPerformed
-        if(curtask==1) return;
+        if (curtask == 1) {
+            return;
+        }
         curtask--;
-        lblctask.setText(""+curtask);
+        lblctask.setText("" + curtask);
         li.previous();
-        t=(Task)li.next();
+        t = (Task) li.next();
+        li.previous();
         txtname.setText(t.getName());
         txtdesc.setText(t.getDesc());
     }//GEN-LAST:event_btnpreviousActionPerformed
+
+    private void btnfirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfirstActionPerformed
+
+        if (curtask == 1) {
+            return;
+        }
+        while (li.hasPrevious()) {
+            li.previous();
+        }
+        Task t = (Task) li.next();
+        li.previous();
+        curtask = 1;
+        lblctask.setText("" + curtask);
+        txtname.setText(t.getName());
+        txtdesc.setText(t.getDesc());
+    }//GEN-LAST:event_btnfirstActionPerformed
+
+    private void mnuclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuclearActionPerformed
+        txtname.setText("");
+        txtdesc.setText("");
+    }//GEN-LAST:event_mnuclearActionPerformed
+
+    private void mnurestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnurestoreActionPerformed
+        txtname.setText(t.getName());
+        txtdesc.setText(t.getDesc());
+    }//GEN-LAST:event_mnurestoreActionPerformed
+
+    private void mnubeforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnubeforeActionPerformed
+        String nm = txtname.getText();
+        String d = txtdesc.getText();
+        t = new Task(nm, d);
+        if (t.validate() == false) {
+            JOptionPane.showMessageDialog(this, "Error - Must enter all information");
+            return;
+        }
+
+        li.add(t);
+        li.previous();
+        if (curtask == 0) {
+            curtask++;
+        }
+        tottask++;
+        lblttask.setText("" + tottask);
+        lblctask.setText("" + curtask);
+        JOptionPane.showMessageDialog(this, "Task Added");
+    }//GEN-LAST:event_mnubeforeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -406,10 +480,10 @@ public class TaskMaster extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnfirst;
     private javax.swing.JButton btnlast;
     private javax.swing.JButton btnnext;
     private javax.swing.JButton btnprevious;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -418,18 +492,18 @@ public class TaskMaster extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField lblctask;
     private javax.swing.JTextField lblttask;
-    private javax.swing.JMenuItem mnuInsertAfter;
+    private javax.swing.JMenuItem mnuafter;
+    private javax.swing.JMenuItem mnubefore;
+    private javax.swing.JMenuItem mnuclear;
     private javax.swing.JMenuItem mnuexit;
     private javax.swing.JMenuItem mnuremove;
     private javax.swing.JMenuItem mnureplace;
+    private javax.swing.JMenuItem mnurestore;
     private javax.swing.JMenuItem mnushowall;
     private javax.swing.JTextArea txtdesc;
     private javax.swing.JTextField txtname;
